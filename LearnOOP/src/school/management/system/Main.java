@@ -30,6 +30,9 @@ public class Main {
 		studentList.add(molatelo);
 		
 		School school = new School(teacherList, studentList);
+		
+		Teacher megan = new Teacher(6, "Megan", 900);
+		school.addTeacher(megan);
 		thabiso.payFees(6000);
 		piet.payFees(5000);
 		System.out.println("School has earned " + school.getTotalMoneyEarned());
