@@ -27,9 +27,11 @@ public class PapadiEGolo implements ActionListener {
 	private int	_mapSize;
 	private int _xCoordinate;
 	private int _yCoordinate;
+	private int _enemyHere;
 
 	public PapadiEGolo(HeroDetails newHero) 
 	{
+		this._enemyHere = 0;
 		this._detailsOfHero = newHero;
 		this._gamePlayButtons = new GamePlayButtons();
 		this._gamePlayButtons.get_fightButton().setEnabled(false);
@@ -67,10 +69,24 @@ public class PapadiEGolo implements ActionListener {
 			this.ChangeLocationOfHero("right");
 		}else if (_gamePlayButtons.get_runButton().getToolTipText() == clicked.getToolTipText())
 		{
-			_heroInformation.displayInformation("Runaway? Can you make it?");
+			if (this._enemyHere == 0)
+			{
+				_heroInformation.displayInformation("What are you running away from??");
+			} else {
+				_heroInformation.displayInformation("Runaway? Can you make it?");
+				this.RunAway();
+				this._enemyHere = 0;
+			}
 		}else if (_gamePlayButtons.get_fightButton().getToolTipText() == clicked.getToolTipText())
 		{
-			_heroInformation.displayInformation("It's about to go down");
+			if (this._enemyHere == 0)
+			{
+				_heroInformation.displayInformation("You are wasting power.");
+			} else {
+				_heroInformation.displayInformation("It's about to go down");
+				this.FightEnemy();
+				this._enemyHere = 0;
+			}
 		}else
 		{
 			System.out.println("Nothing happening yet");
@@ -98,11 +114,15 @@ public class PapadiEGolo implements ActionListener {
 	private void CreateEnemies() 
 	{
 		Random randomCoordinate = new Random();
+		int j = randomCoordinate.nextInt(3);
 		this._enemyArray = new ArrayList<Map<String, Integer>>(this._detailsOfHero.get_HeroLevel() + 1);
 		for(int i = 0; i < this._detailsOfHero.get_HeroLevel() + 1; i++)
 		{
 			this._enemies = new HashMap<>(this._detailsOfHero.get_HeroLevel() + 1);
 			this._enemies.put("Enemy" + Integer.toString(i + 1), i + 1);
+			this._enemies.put("Enemy" + Integer.toString(i + 1) + "HP", 60);
+			this._enemies.put("Enemy" + Integer.toString(i + 1) + "Defense", 25);
+			this._enemies.put("Enemy" + Integer.toString(i + 1) + "Weapon", j);
 			this._enemies.put("Enemy" + Integer.toString(i + 1)+"xCoordinate", randomCoordinate.nextInt(this._mapSize));
 			this._enemies.put("Enemy" + Integer.toString(i + 1)+"yCoordinate", randomCoordinate.nextInt(this._mapSize));
 			this._enemyArray.add(this._enemies);
@@ -129,23 +149,25 @@ public class PapadiEGolo implements ActionListener {
 	{
 		if (directionOfHero.equals("up"))
 		{
-			this._xCoordinate--;
+			this._yCoordinate--;
 			this._detailsOfHero.set_HeroExp(this._detailsOfHero.get_HeroExp() + 10);
 			this.DisplayStats();
-			if (this._xCoordinate < 0)
+			if (this._yCoordinate < 0)
 			{
 				this.LevelingUp();
+				this.CreateMap(this._detailsOfHero.get_HeroLevel());
 				JOptionPane.showMessageDialog(null, "reach up, checking if you can move to the next level");
 			}
 			this.LevelingUp();
 		}else if (directionOfHero.equals("down"))
 		{
-			this._xCoordinate++;
+			this._yCoordinate++;
 			this._detailsOfHero.set_HeroExp(this._detailsOfHero.get_HeroExp() + 10);
 			this.DisplayStats();
-			if (this._xCoordinate > this._mapSize)
+			if (this._yCoordinate >= this._mapSize)
 			{
 				this.LevelingUp();
+				this.CreateMap(this._detailsOfHero.get_HeroLevel());
 				JOptionPane.showMessageDialog(null, "reach down, checking if you can move to the next level");
 			}
 			this.LevelingUp();
@@ -154,9 +176,10 @@ public class PapadiEGolo implements ActionListener {
 			this._xCoordinate--;
 			this._detailsOfHero.set_HeroExp(this._detailsOfHero.get_HeroExp() + 10);
 			this.DisplayStats();			
-			if (this._yCoordinate < 0)
+			if (this._xCoordinate < 0)
 			{
 				this.LevelingUp();
+				this.CreateMap(this._detailsOfHero.get_HeroLevel());
 				JOptionPane.showMessageDialog(null, "reach left, checking if you can move to the next level");
 			}
 			this.LevelingUp();
@@ -165,9 +188,10 @@ public class PapadiEGolo implements ActionListener {
 			this._xCoordinate++;
 			this._detailsOfHero.set_HeroExp(this._detailsOfHero.get_HeroExp() + 10);
 			this.DisplayStats();
-			if (this._xCoordinate > this._mapSize)
+			if (this._xCoordinate >= this._mapSize)
 			{
 				this.LevelingUp();
+				this.CreateMap(this._detailsOfHero.get_HeroLevel());
 				JOptionPane.showMessageDialog(null, "reach right, checking if you can move to the next level");
 			}
 			this.LevelingUp();
@@ -182,15 +206,44 @@ public class PapadiEGolo implements ActionListener {
 			if (map.get("Enemy" + Integer.toString(i + 1)+"yCoordinate") == this._yCoordinate
 				&& map.get("Enemy" + Integer.toString(i + 1)+"xCoordinate") == this._xCoordinate)
 			{
-				
-					JOptionPane.showMessageDialog(null, "Enemy is here!!!");
-					_gamePlayButtons.get_runButton().setEnabled(true);
-					_gamePlayButtons.get_fightButton().setEnabled(true);
-					_gamePlayButtons.get_downImg().setEnabled(false);
-					_gamePlayButtons.get_upImg().setEnabled(false);
-					_gamePlayButtons.get_leftImg().setEnabled(false);
-					_gamePlayButtons.get_rightImg().setEnabled(false);
+				this._enemyHere = i + 1;	
+				JOptionPane.showMessageDialog(null, "Enemy is here!!!");
 			}
+			i++;
+		}
+	}
+	
+	private void FightEnemy()
+	{
+		Random random = new Random();
+		Map<String, Integer> map = this._enemyArray.get(_enemyHere - 1);
+		int enemyHP = map.get("Enemy" + Integer.toString(this._enemyHere) + "HP");
+		JOptionPane.showMessageDialog(null, enemyHP);
+		while(enemyHP > 0)
+		{
+			int randomNum = random.nextInt(5);
+			
+			if (randomNum%2 == 0)
+			{
+				_heroInformation.displayInformation("Enemy Hits first.");
+			} else {
+				enemyHP -= 10;
+				_heroInformation.displayInformation("Hero strikes again.");
+			}
+		}
+	}
+	
+	private void RunAway()
+	{
+		Random random = new Random();
+		int randomNum = random.nextInt(5);
+		
+		if (randomNum%2 == 0)
+		{
+			_heroInformation.displayInformation("You have to fight.");
+			this.FightEnemy();
+		} else {
+			_heroInformation.displayInformation("That was a close call.");
 		}
 	}
 }
