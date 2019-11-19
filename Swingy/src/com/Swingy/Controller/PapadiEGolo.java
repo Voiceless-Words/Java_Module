@@ -114,10 +114,18 @@ public class PapadiEGolo implements ActionListener {
 	private void CreateEnemies() 
 	{
 		Random randomCoordinate = new Random();
-		int j = randomCoordinate.nextInt(3);
+		
 		this._enemyArray = new ArrayList<Map<String, Integer>>(this._detailsOfHero.get_HeroLevel() + 1);
 		for(int i = 0; i < this._detailsOfHero.get_HeroLevel() + 1; i++)
 		{
+			int j = 0;
+			if (this._detailsOfHero.get_HeroLevel() > 5)
+			{
+				j = randomCoordinate.nextInt((5 - 1) + 1) + 1;
+			} else {
+				j = randomCoordinate.nextInt(2) + 1;
+			}
+			
 			this._enemies = new HashMap<>(this._detailsOfHero.get_HeroLevel() + 1);
 			this._enemies.put("Enemy" + Integer.toString(i + 1), i + 1);
 			this._enemies.put("Enemy" + Integer.toString(i + 1) + "HP", 60);
@@ -218,18 +226,104 @@ public class PapadiEGolo implements ActionListener {
 		Random random = new Random();
 		Map<String, Integer> map = this._enemyArray.get(_enemyHere - 1);
 		int enemyHP = map.get("Enemy" + Integer.toString(this._enemyHere) + "HP");
-		JOptionPane.showMessageDialog(null, enemyHP);
+		int enemyW = map.get("Enemy" + Integer.toString(this._enemyHere) + "Weapon");
 		while(enemyHP > 0)
 		{
 			int randomNum = random.nextInt(5);
 			
 			if (randomNum%2 == 0)
 			{
-				_heroInformation.displayInformation("Enemy Hits first.");
+				if (enemyW == 1)
+				{
+					this._detailsOfHero.set_HeroDefense(this._detailsOfHero.get_HeroDefense() - 5);
+					if (this._detailsOfHero.get_HeroDefense() < 10 && this._detailsOfHero.get_HeroDefense() > 0)
+					{
+						this._detailsOfHero.set_HeroHP(this._detailsOfHero.get_HeroHP() - 1);
+					} else if (this._detailsOfHero.get_HeroDefense() <= 0)
+					{
+						this._detailsOfHero.set_HeroHP(this._detailsOfHero.get_HeroHP() - 5);
+					}
+					this._heroInformation.displayInformation("The enemy stabbed you with a knife");
+				} else if (enemyW == 2) {
+					this._detailsOfHero.set_HeroDefense(this._detailsOfHero.get_HeroDefense() - 7);
+					if (this._detailsOfHero.get_HeroDefense() < 10 && this._detailsOfHero.get_HeroDefense() > 0)
+					{
+						this._detailsOfHero.set_HeroHP(this._detailsOfHero.get_HeroHP() - 1);
+					} else if (this._detailsOfHero.get_HeroDefense() <= 0)
+					{
+						this._detailsOfHero.set_HeroHP(this._detailsOfHero.get_HeroHP() - 7);
+					}
+					this._heroInformation.displayInformation("The enemy hit you with a knobkirrie");
+				} else if (enemyW == 3) {
+					this._detailsOfHero.set_HeroDefense(this._detailsOfHero.get_HeroDefense() - 8);
+					if (this._detailsOfHero.get_HeroDefense() < 10 && this._detailsOfHero.get_HeroDefense() > 0)
+					{
+						this._detailsOfHero.set_HeroHP(this._detailsOfHero.get_HeroHP() - 1);
+					} else if (this._detailsOfHero.get_HeroDefense() <= 0)
+					{
+						this._detailsOfHero.set_HeroHP(this._detailsOfHero.get_HeroHP() - 8);
+					}
+					this._heroInformation.displayInformation("The enemy shot you with a 9mm gun");
+				} else if (enemyW == 4) {
+
+					this._detailsOfHero.set_HeroDefense(this._detailsOfHero.get_HeroDefense() - 10);
+					if (this._detailsOfHero.get_HeroDefense() < 10 && this._detailsOfHero.get_HeroDefense() > 0)
+					{
+						this._detailsOfHero.set_HeroHP(this._detailsOfHero.get_HeroHP() - 1);
+					} else if (this._detailsOfHero.get_HeroDefense() <= 0)
+					{
+						this._detailsOfHero.set_HeroHP(this._detailsOfHero.get_HeroHP() - 10);
+					}
+					
+					this._heroInformation.displayInformation("The enemy dropped a Ak-47");
+				} else if (enemyW == 5) {
+
+					this._detailsOfHero.set_HeroDefense(this._detailsOfHero.get_HeroDefense() - 12);
+					if (this._detailsOfHero.get_HeroDefense() < 10 && this._detailsOfHero.get_HeroDefense() > 0)
+					{
+						this._detailsOfHero.set_HeroHP(this._detailsOfHero.get_HeroHP() - 1);
+					} else if (this._detailsOfHero.get_HeroDefense() <= 0)
+					{
+						this._detailsOfHero.set_HeroHP(this._detailsOfHero.get_HeroHP() - 12);
+					
+					this._heroInformation.displayInformation("The enemy released a Missile");
+					}
+				}				
+				
+				this.DisplayStats();
 			} else {
 				enemyHP -= 10;
+				this.DisplayStats();
 				_heroInformation.displayInformation("Hero strikes again.");
 			}
+		}
+		
+		if (this._detailsOfHero.get_HeroHP() > 0)
+		{
+			this._heroInformation.displayInformation("You killed the enemy");
+			this._detailsOfHero.set_HeroDefense(this._detailsOfHero.get_HeroDefense() + 50);
+			this._detailsOfHero.set_HeroExp(this._detailsOfHero.get_HeroExp() + 300);
+			enemyW = map.get("Enemy" + Integer.toString(this._enemyHere) + "Weapon");
+			
+			int dropW = random.nextInt(4);
+			
+			if (dropW%2 != 0)
+			{
+				if (enemyW == 1)
+				{
+					this._heroInformation.displayInformation("The enemy dropped a knife");
+				} else if (enemyW == 2) {
+					this._heroInformation.displayInformation("The enemy dropped a knobkirrie");
+				} else if (enemyW == 3) {
+					this._heroInformation.displayInformation("The enemy dropped a 9mm gun");
+				} else if (enemyW == 4) {
+					this._heroInformation.displayInformation("The enemy dropped a Ak-47");
+				} else if (enemyW == 5) {
+					this._heroInformation.displayInformation("The enemy dropped a Missile");
+				}
+				
+			}
+			this._enemyArray.remove(this._enemyHere - 1);
 		}
 	}
 	
