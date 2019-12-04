@@ -1,4 +1,4 @@
-package com.Swingy.View.LetlakalaLaGoRaloka;
+package com.Swingy.View.GameOver;
 
 import java.awt.BorderLayout;
 
@@ -6,8 +6,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-public class GamePageTextArea extends JPanel {
-	
+public class GameOverTextArea extends JPanel{
 	/**serial version
 	 * to mute warning
 	 */
@@ -15,7 +14,7 @@ public class GamePageTextArea extends JPanel {
 	
 	private JTextArea _textArea;
 	
-	public GamePageTextArea()
+	public GameOverTextArea()
 	{
 		_textArea = new JTextArea();
 		
@@ -24,21 +23,10 @@ public class GamePageTextArea extends JPanel {
 		_textArea.setEditable(false);
 	}
 	
-	public void appendText(String text, String envGame)
+	public void appendText(String text)
 	{
-		if (envGame == "Gui")
-		{
-			_textArea.append(text);
-			_textArea.append("\n");
-		} else {
-			System.out.println(text);
-		}
-
-	}
-	
-	public String getTextArea()
-	{
-		return this._textArea.getText();
+		_textArea.append(text);
+		_textArea.append("\n");
 	}
 
 }

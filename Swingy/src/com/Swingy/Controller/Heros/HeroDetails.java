@@ -15,5 +15,7 @@ public interface HeroDetails {
 	public void set_HeroDefense(int _HeroDefense);
 	public int get_HeroHP();
 	public void set_HeroHP(int _HeroHP);
+	public int [] get_HeroWeapons();
+	public void set_HeroWeapos(int number);
 	
 }

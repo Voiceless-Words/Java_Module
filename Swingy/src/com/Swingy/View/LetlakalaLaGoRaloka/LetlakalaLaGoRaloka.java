@@ -53,8 +53,8 @@ public class LetlakalaLaGoRaloka extends JPanel implements Display {
 		add(_gameButtons, BorderLayout.WEST);
 		
 		this.setHeroInfoListener(_heroInformation = new HeroInformation() {
-			public void displayInformation(String text) {
-				_gamePageTextArea.appendText(text);				
+			public void displayInformation(String text, String envGame) {
+				_gamePageTextArea.appendText(text, envGame);				
 			}
 		});
 		

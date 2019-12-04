@@ -1,5 +1,7 @@
 package com.Swingy.Model;
 
+import java.sql.*;
+
 public class HeroStats {
 	private String _HeroName;
 	private String _HeroClass;
@@ -8,6 +10,9 @@ public class HeroStats {
 	private int _HeroAttack;
 	private int _HeroDefense;
 	private int _HeroHP;
+	private Connection _connect;
+	private Statement _queryStatement;
+	private ResultSet _queryResult;
 	
 	public HeroStats(String _HeroName, String _HeroClass, int _HeroLevel, int _HeroExp, int _HeroDefense, int _HeroHP)
 	{
@@ -16,7 +21,15 @@ public class HeroStats {
 		this._HeroLevel = _HeroLevel;
 		this._HeroExp = _HeroExp;
 		this._HeroDefense = _HeroDefense;
-		this._HeroHP = _HeroHP;		
+		this._HeroHP = _HeroHP;	
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			_connect = DriverManager.getConnection("");
+			_queryStatement = _connect.createStatement();
+			
+		}catch(Exception e) {
+			System.out.println(e);
+		}
 	}
 
 	public String get_HeroName() {

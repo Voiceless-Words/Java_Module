@@ -45,7 +45,7 @@ public class LetlakalaLaGae extends JPanel implements Display {
 		_legendHero = _startPageForm.getHero3Img();
 		
 		this.setHeroInfoListener(_heroInformation = new HeroInformation() {
-			public void displayInformation(String text) {
+			public void displayInformation(String text, String envGame) {
 				_startPageTextArea.appendText(text);				
 			}
 		});

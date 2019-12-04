@@ -1,5 +1,7 @@
 package com.Swingy.Controller.Heros;
 
+import java.util.Random;
+
 public class LegendHero implements HeroDetails {
 
 	
@@ -10,6 +12,7 @@ public class LegendHero implements HeroDetails {
 	private int _heroAttack;
 	private int _heroDefense;
 	private int _heroHP;
+	private int[] _heroWeapons;
 	
 	public LegendHero(String heroName, String heroClass, int heroLevel,int heroAttack, int heroExp, int heroDefense, int heroHP)
 	{
@@ -20,6 +23,10 @@ public class LegendHero implements HeroDetails {
 		this._heroDefense = heroDefense;
 		this._heroHP = heroHP;
 		this._heroAttack = heroAttack;
+		this._heroWeapons = new int[5];
+		
+		Random random = new Random();
+		this._heroWeapons[0] = random.nextInt((5 - 1) + 1) + 1;
 	}
 
 	public String get_HeroName() {
@@ -76,5 +83,22 @@ public class LegendHero implements HeroDetails {
 
 	public void set_HeroHP(int heroHP) {
 		this._heroHP = heroHP;
+	}
+
+	@Override
+	public int[] get_HeroWeapons() {
+		return this._heroWeapons;
+	}
+
+	@Override
+	public void set_HeroWeapos(int number) {
+		int arrSize = this._heroWeapons.length;
+		
+		if (arrSize < 5)
+		{
+			this._heroWeapons[arrSize] = number;
+		} else {
+			this._heroWeapons[arrSize - 1] = number;
+		}	
 	}
 }

@@ -50,14 +50,14 @@ public class LaGaeControls implements ActionListener {
 				//_display.gameControlButtonsListener((new PapadiEGolo()));
 				if (this._chosenOne == "Warrior")
 				{
-					_display.gameControlButtonsListener(new PapadiEGolo(HeroStart.newHero(_heroName, _chosenOne, 0, 75, 450, 95, 100)));
+					_display.gameControlButtonsListener(new PapadiEGolo(HeroStart.newHero(_heroName, _chosenOne, 0, 75, 450, 95, 100), "Gui"));
 					
 				} else if (this._chosenOne == "Healer")
 				{
-					_display.gameControlButtonsListener(new PapadiEGolo(HeroStart.newHero(_heroName, _chosenOne, 0, 65, 450, 50, 150)));
+					_display.gameControlButtonsListener(new PapadiEGolo(HeroStart.newHero(_heroName, _chosenOne, 0, 65, 450, 50, 150), "Gui"));
 				} else
 				{
-					_display.gameControlButtonsListener(new PapadiEGolo(HeroStart.newHero(_heroName, _chosenOne, 0, 90, 450, 85, 100)));
+					_display.gameControlButtonsListener(new PapadiEGolo(HeroStart.newHero(_heroName, _chosenOne, 0, 90, 450, 85, 100), "Gui"));
 				}
 			}
 		}
@@ -71,7 +71,7 @@ public class LaGaeControls implements ActionListener {
 				this._chosenOne = "Warrior";
 				_heroInformation.displayInformation("Hero Class Type: Warrior\n"
 						+ "Hero Attack: 75\nHero Defense: 95\nHero Health Points: 100\n"
-						+ "Hero Experience: 85");
+						+ "Hero Experience: 85", "Gui");
 			}
 		}
 		else if (_heroButtons.getHero2Img().getToolTipText() == clicked.getToolTipText()) {
@@ -80,7 +80,7 @@ public class LaGaeControls implements ActionListener {
 				this._chosenOne = "Healer";
 				_heroInformation.displayInformation("Hero Class Type: Healer\n"
 						+ "Hero Attack: 65\nHero Defense: 50\nHero Health Points: 150\n"
-						+ "Hero Experience: 65");
+						+ "Hero Experience: 65", "Gui");
 			}
 		}
 		else if (_heroButtons.getHero3Img().getToolTipText() == clicked.getToolTipText()) {
@@ -89,7 +89,7 @@ public class LaGaeControls implements ActionListener {
 				this._chosenOne = "Legend";
 				_heroInformation.displayInformation("Hero Class Type: Legend\n"
 						+ "Hero Attack: 90\nHero Defense: 85\nHero Health Points: 100\n"
-						+ "Hero Experience: 95");
+						+ "Hero Experience: 95", "Gui");
 			}
 		} else {
 			System.out.printf("nothing yet");
